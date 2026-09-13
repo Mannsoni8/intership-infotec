@@ -1,6 +1,10 @@
 import { Schema, model } from "mongoose";
+import {
+  ITelemetryBucket,
+  ITelemetryReading,
+} from "../types/telemetry.types";
 
-const telemetryReadingSchema = new Schema(
+const telemetryReadingSchema = new Schema<ITelemetryReading>(
   {
     timestamp: {
       type: Date,
@@ -10,11 +14,15 @@ const telemetryReadingSchema = new Schema(
     latitude: {
       type: Number,
       required: true,
+      min: -90,
+      max: 90,
     },
 
     longitude: {
       type: Number,
       required: true,
+      min: -180,
+      max: 180,
     },
 
     speed: {
@@ -46,7 +54,7 @@ const telemetryReadingSchema = new Schema(
   }
 );
 
-const telemetryBucketSchema = new Schema(
+const telemetryBucketSchema = new Schema<ITelemetryBucket>(
   {
     vehicleId: {
       type: Schema.Types.ObjectId,
@@ -81,7 +89,7 @@ telemetryBucketSchema.index({
   bucketStart: 1,
 });
 
-export const TelemetryBucket = model(
+export const TelemetryBucket = model<ITelemetryBucket>(
   "TelemetryBucket",
   telemetryBucketSchema
 );
