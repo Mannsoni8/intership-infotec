@@ -40,3 +40,21 @@ export const addTelemetryReading = async (
         }
     );
 };
+
+export const getTelemetryByTimeRange = async (
+    vehicleId: Types.ObjectId,
+    start: Date,
+    end: Date
+) => {
+    const buckets = await TelemetryBucket.find({
+        vehicleId,
+        bucketStart: {
+            $gte: getBucketStart(start),
+            $lte: getBucketStart(end),
+        },
+    })
+        .sort({ bucketStart: 1 })
+        .lean();
+
+    return buckets;
+};
