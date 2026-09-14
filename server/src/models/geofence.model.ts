@@ -1,0 +1,55 @@
+import { Schema, model } from "mongoose";
+
+const geofenceSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    description: {
+      type: String,
+      trim: true,
+    },
+
+    geometry: {
+      type: {
+        type: String,
+        enum: ["Polygon", "Circle"],
+        required: true,
+      },
+
+      coordinates: {
+        type: [[[Number]]],
+        required: true,
+      },
+    },
+
+    radius: {
+      type: Number,
+      min: 0,
+    },
+
+    isActive: {
+      type: Boolean,
+      default: true,
+      index: true,
+    },
+
+    alertOnEntry: {
+      type: Boolean,
+      default: true,
+    },
+
+    alertOnExit: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+export const Geofence = model("Geofence", geofenceSchema);
