@@ -1,6 +1,11 @@
 import { Schema, model } from "mongoose";
+import {
+  IAlert,
+  AlertType,
+  AlertSeverity,
+} from "../types/alert.types";
 
-const alertSchema = new Schema(
+const alertSchema = new Schema<IAlert>(
   {
     vehicleId: {
       type: Schema.Types.ObjectId,
@@ -12,6 +17,7 @@ const alertSchema = new Schema(
     geofenceId: {
       type: Schema.Types.ObjectId,
       ref: "Geofence",
+      index: true,
     },
 
     type: {
@@ -21,14 +27,19 @@ const alertSchema = new Schema(
         "overspeed",
         "vehicle_offline",
         "telemetry_anomaly",
-      ],
+      ] satisfies AlertType[],
       required: true,
       index: true,
     },
 
     severity: {
       type: String,
-      enum: ["low", "medium", "high", "critical"],
+      enum: [
+        "low",
+        "medium",
+        "high",
+        "critical",
+      ] satisfies AlertSeverity[],
       required: true,
       index: true,
     },
@@ -36,11 +47,19 @@ const alertSchema = new Schema(
     message: {
       type: String,
       required: true,
+      trim: true,
     },
 
     location: {
-      latitude: Number,
-      longitude: Number,
+      latitude: {
+        type: Number,
+        required: true,
+      },
+
+      longitude: {
+        type: Number,
+        required: true,
+      },
     },
 
     occurredAt: {
@@ -65,4 +84,17 @@ const alertSchema = new Schema(
   }
 );
 
-export const Alert = model("Alert", alertSchema);
+alertSchema.index({
+  vehicleId: 1,
+  occurredAt: -1,
+});
+
+alertSchema.index({
+  resolved: 1,
+  occurredAt: -1,
+});
+
+export const Alert = model<IAlert>(
+  "Alert",
+  alertSchema
+);
