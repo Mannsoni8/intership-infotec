@@ -1,6 +1,10 @@
 import { Schema, model } from "mongoose";
+import {
+  IGeofence,
+  GeofenceGeometry,
+} from "../types/geofence.types";
 
-const geofenceSchema = new Schema(
+const geofenceSchema = new Schema<IGeofence>(
   {
     name: {
       type: String,
@@ -21,7 +25,7 @@ const geofenceSchema = new Schema(
       },
 
       coordinates: {
-        type: [[[Number]]],
+        type: Schema.Types.Mixed,
         required: true,
       },
     },
@@ -52,4 +56,7 @@ const geofenceSchema = new Schema(
   }
 );
 
-export const Geofence = model("Geofence", geofenceSchema);
+export const Geofence = model<IGeofence>(
+  "Geofence",
+  geofenceSchema
+);
