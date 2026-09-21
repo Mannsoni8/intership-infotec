@@ -1,258 +1,385 @@
 <div align="center">
 
-# ⚡ FleetDash
+# ⚡ FLEETDASH
 
-### *High-Throughput Event-Driven Fleet Telemetry Platform*
+### `REAL-TIME FLEET TELEMETRY • GEOINTELLIGENCE • LIVE MONITORING`
 
-<p align="center">
-  <img src="./assets/fleetdash-telemetry.svg" alt="Animated FleetDash real-time telemetry visualization" width="100%" />
-</p>
+<img src="./assets/fleetdash-telemetry.svg" alt="FleetDash telemetry animation" width="100%"/>
 
-[![Branch: mann](https://img.shields.io/badge/Branch-mann-blue?style=for-the-badge&logo=git&logoColor=white)](https://github.com/Mannsoni8/intership-infotec/tree/mann)
-[![TypeScript](https://img.shields.io/badge/TypeScript-Strict_Mode-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-v20+-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
-[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-Bucket_Pattern-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
-[![Redis](https://img.shields.io/badge/Redis-Pub%2FSub-DC382D?style=for-the-badge&logo=redis&logoColor=white)](https://redis.io/)
-[![Socket.IO](https://img.shields.io/badge/Socket.io-Real--Time-010101?style=for-the-badge&logo=socket.io&logoColor=white)](https://socket.io/)
-[![Status](https://img.shields.io/badge/Status-Active_Development-orange?style=for-the-badge)](https://github.com/Mannsoni8/intership-infotec)
+<br/>
 
-<p align="center">
-  <b>Real-time high-frequency GPS tracking, automated geospatial geofencing, time-series telemetry bucketing, and smooth 60 FPS hardware-accelerated dashboard rendering.</b>
-</p>
+[![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6?style=for-the-badge\&logo=typescript\&logoColor=white)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-20+-339933?style=for-the-badge\&logo=node.js\&logoColor=white)](https://nodejs.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge\&logo=react\&logoColor=black)](https://react.dev/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge\&logo=mongodb\&logoColor=white)](https://www.mongodb.com/)
+[![Redis](https://img.shields.io/badge/Redis-Pub/Sub-DC382D?style=for-the-badge\&logo=redis\&logoColor=white)](https://redis.io/)
+[![Socket.IO](https://img.shields.io/badge/Socket.IO-010101?style=for-the-badge\&logo=socket.io\&logoColor=white)](https://socket.io/)
 
----
+<br/>
+
+**⚡ High-frequency GPS tracking · 🌍 Geofencing · 📡 Live telemetry · 🚨 Alerts · 📊 60 FPS visualization**
 
 </div>
 
-## 📌 1. Project Overview
+---
 
-**FleetDash** is an enterprise-grade, event-driven fleet telemetry and monitoring system designed to handle high-frequency location and sensor streams across extensive vehicle fleets.
+## 🛰️ What is FleetDash?
 
-Built with scalability and strict type safety at its core, FleetDash decouples intensive ingestion from analytical processing and client fanout:
-- **High-Frequency Ingestion**: Processes dense telemetry streams without blocking event loops.
-- **Time-Series Optimization**: Implements MongoDB's **Bucket Pattern** to compress and aggregate hourly vehicle readings into single documents.
-- **Spatial Intelligence**: Real-time evaluation of circular and polygonal geofence breaches via Turf.js.
-- **Real-Time Distribution**: Redis Pub/Sub broker powering distributed WebSocket broadcasting.
-- **60 FPS Hardware-Accelerated UI**: Custom telemetry client-side ring buffers driving HTML5 Canvas rendering via `requestAnimationFrame`.
+**FleetDash** is a real-time fleet telemetry platform designed to process vehicle location and sensor data at high frequency.
+
+The system separates **data ingestion, processing, storage, geospatial analysis, and real-time delivery** so each part can scale independently.
+
+### Core capabilities
+
+* 📡 High-frequency vehicle telemetry ingestion
+* 🌍 Real-time geofence detection
+* 🚨 Automated fleet alerts
+* 🗄️ Optimized MongoDB telemetry storage
+* 📬 Redis Pub/Sub event distribution
+* 🔌 Socket.IO real-time communication
+* ⚡ Worker-thread based processing
+* 🖥️ React dashboard with high-performance rendering
 
 ---
 
-## 🏗️ 2. System Architecture
-
-FleetDash follows a decoupled, asynchronous ingestion and fanout pipeline:
+## 🎨 System Flow
 
 ```mermaid
 flowchart LR
-    A[📡 Vehicle Telemetry Stream] --> B[⚡ Express Ingestion API]
-    B --> C[🧵 worker_threads Pool]
-    C --> D[(🗄️ MongoDB Bucket Pattern)]
-    C --> E[🌐 Turf.js Geospatial Engine]
-    E -- Breaches / Events --> F[(🚨 Alert Service)]
-    C --> G[📬 Redis Pub/Sub Broker]
-    G --> H[🔌 Socket.IO Gateway]
-    H --> I[📥 React Telemetry Buffer]
-    I --> J[🖥️ Canvas 60 FPS Engine]
+
+    A["📡 Vehicle"] --> B["⚡ Express API"]
+
+    B --> C["🧵 Worker Threads"]
+
+    C --> D["🗄️ MongoDB"]
+
+    C --> E["🌍 Geofence Engine"]
+
+    E --> F["🚨 Alerts"]
+
+    C --> G["📬 Redis"]
+
+    G --> H["🔌 Socket.IO"]
+
+    H --> I["⚛️ React Dashboard"]
+
+    I --> J["🎨 Canvas Renderer"]
 ```
 
-### Ingestion & Processing Pipeline
-1. **Vehicle Telemetry** sends continuous location and telemetry payloads (`lat`, `lng`, `speed`, `heading`, `batteryLevel`, `fuelLevel`).
-2. **Express Ingestion API** validates incoming schema without synchronous database bottlenecks.
-3. **`worker_threads` Pool** offloads heavy compute, serialization, and stream validation from the main thread.
-4. **MongoDB Bucket Pattern** compacts 1-hour batches of telemetry into single structured documents to minimize index overhead and write I/O.
-5. **Turf.js Geospatial Engine** performs sub-millisecond point-in-polygon and circle proximity checks for active geofences.
-6. **Redis Pub/Sub** broadcasts state updates across horizontally scalable backend nodes.
-7. **Socket.IO** streams events to connected operator clients in real-time.
-8. **React Telemetry Buffer + HTML5 Canvas** interpolates positions smoothly using `requestAnimationFrame` for buttery 60 FPS rendering.
+### Data Pipeline
+
+```text
+📡 VEHICLE
+    │
+    ▼
+⚡ INGESTION API
+    │
+    ▼
+🧵 WORKERS
+    ├──────────────► 🗄️ MONGODB
+    │
+    ├──────────────► 🌍 GEOFENCE ENGINE
+    │                       │
+    │                       ▼
+    │                    🚨 ALERT
+    │
+    ▼
+📬 REDIS PUB/SUB
+    │
+    ▼
+🔌 SOCKET.IO
+    │
+    ▼
+⚛️ REACT
+    │
+    ▼
+🎨 60 FPS DASHBOARD
+```
 
 ---
 
-## 🛠️ 3. Technology Stack
+## 🧠 Architecture
 
-| Layer | Technologies | Purpose |
-| :--- | :--- | :--- |
-| **Backend Runtime** | Node.js (ES Modules), TypeScript (Strict) | High-performance asynchronous execution with total type safety |
-| **HTTP Framework** | Express 5 | Ingestion endpoints, REST APIs, and middleware pipelines |
-| **Database & Storage** | MongoDB, Mongoose 9 | Time-series vehicle telemetry bucketing and relational metadata storage |
-| **Message Broker** | Redis Pub/Sub | Distributed real-time inter-service message distribution |
-| **Concurrency** | Node.js `worker_threads` | CPU-intensive spatial calculations and parallel stream ingestion |
-| **Geospatial Engine**| Turf.js | Precision geofence containment, point-in-polygon, and distance math |
-| **Real-time Web** | Socket.IO | Bi-directional, low-latency live telemetry & alert streaming |
-| **Frontend UI** | React 19, TypeScript, Vite | Reactive monitoring cockpit, telemetry buffers, and state management |
-| **Data Visualization**| HTML5 Canvas API, `requestAnimationFrame` | High-density 60 FPS fleet map and telemetry rendering |
+FleetDash uses an **event-driven architecture** where telemetry is processed asynchronously instead of forcing every operation through the main application thread.
+
+| Layer       | Technology            | Responsibility               |
+| ----------- | --------------------- | ---------------------------- |
+| Frontend    | React 19 + TypeScript | Monitoring dashboard         |
+| Runtime     | Node.js               | Backend execution            |
+| API         | Express 5             | Telemetry & REST APIs        |
+| Database    | MongoDB + Mongoose    | Vehicle & telemetry storage  |
+| Messaging   | Redis Pub/Sub         | Event distribution           |
+| Concurrency | Worker Threads        | CPU-intensive processing     |
+| Geospatial  | Turf.js               | Geofence calculations        |
+| Realtime    | Socket.IO             | Live telemetry               |
+| Rendering   | Canvas API            | High-frequency visualization |
 
 ---
 
-## 📁 4. Repository Structure
+## 📡 Telemetry Model
 
+A vehicle can continuously send data such as:
+
+```json
+{
+  "vehicleId": "VH-1024",
+  "lat": 22.3072,
+  "lng": 73.1812,
+  "speed": 64,
+  "heading": 145,
+  "batteryLevel": 82,
+  "fuelLevel": 61
+}
 ```
+
+Telemetry is grouped into time-based buckets to reduce unnecessary database overhead.
+
+### MongoDB Bucket Pattern
+
+```text
+Vehicle
+   │
+   ├── Hour 01
+   │    ├── Reading
+   │    ├── Reading
+   │    └── Reading
+   │
+   ├── Hour 02
+   │    ├── Reading
+   │    ├── Reading
+   │    └── Reading
+   │
+   └── Hour 03
+        ├── Reading
+        └── Reading
+```
+
+---
+
+## 🌍 Geospatial Intelligence
+
+FleetDash uses **Turf.js** for geospatial operations.
+
+Supported concepts include:
+
+* 📍 Point location tracking
+* 🔵 Circular geofences
+* 🔷 Polygon geofences
+* 🚨 Boundary breach detection
+* 📏 Distance calculations
+* 🗺️ Spatial containment checks
+
+Example:
+
+```text
+             GEOFENCE
+        ╭────────────────╮
+        │                │
+        │      🚗        │
+        │                │
+        │                │
+        ╰────────────────╯
+                 │
+                 │ vehicle exits
+                 ▼
+              🚨 ALERT
+```
+
+---
+
+## 📊 Project Progress
+
+| Feature                   | Status |
+| ------------------------- | :----: |
+| TypeScript type system    |    ✅   |
+| MongoDB models            |    ✅   |
+| Telemetry bucket logic    |    ✅   |
+| Database connection       |    ✅   |
+| Vehicle service           |   🔄   |
+| API endpoints             |    ⏳   |
+| Request validation        |    ⏳   |
+| Geospatial engine         |    ⏳   |
+| Worker-thread ingestion   |    ⏳   |
+| Redis Pub/Sub             |    ⏳   |
+| Socket.IO streaming       |    ⏳   |
+| Canvas telemetry renderer |    ⏳   |
+
+---
+
+## 🛠️ Tech Stack
+
+```text
+                 FLEETDASH
+                     │
+        ┌────────────┴────────────┐
+        │                         │
+     FRONTEND                  BACKEND
+        │                         │
+   React 19                 Node.js 20+
+   TypeScript               Express 5
+   Vite                     TypeScript
+   Canvas API                    │
+        │                    ┌────┴────┐
+        │                    │         │
+        │                 MongoDB    Redis
+        │                    │         │
+        └──────────────► Socket.IO ◄──┘
+                              │
+                              ▼
+                         LIVE TELEMETRY
+```
+
+---
+
+## 📁 Project Structure
+
+```text
 intership-infotec/
-├── .claude/
-│   └── CLAUDE.md                     # Project engineering guidelines & development rules
-├── client/                           # React 19 + TypeScript frontend (Vite)
-│   ├── public/                       # Static public assets
+│
+├── client/
 │   ├── src/
-│   │   ├── assets/                   # UI graphics & icons
-│   │   ├── App.tsx                   # Main dashboard component
+│   │   ├── assets/
+│   │   ├── App.tsx
 │   │   ├── App.css
 │   │   ├── index.css
-│   │   └── main.tsx                  # Client entrypoint
-│   ├── package.json
-│   ├── tsconfig.json
-│   └── vite.config.ts
-├── server/                           # Express 5 + TypeScript backend
+│   │   └── main.tsx
+│   └── package.json
+│
+├── server/
 │   ├── src/
 │   │   ├── config/
-│   │   │   ├── database.ts           # MongoDB connection handler
-│   │   │   ├── env.ts                # Environment variable parsing & validation
-│   │   │   └── redis.ts              # Redis client configuration
-│   │   ├── controllers/              # Express request/response controllers
-│   │   │   ├── geofence.controller.ts
-│   │   │   ├── telemetry.controller.ts
-│   │   │   └── vehicle.controller.ts
-│   │   ├── geospatial/               # Spatial calculations & rule engines
-│   │   │   ├── geofence.engine.ts
-│   │   │   └── turf.service.ts
-│   │   ├── middleware/               # Express middlewares (Validation, Error, 404)
-│   │   │   ├── error.middleware.ts
-│   │   │   ├── not-found.middleware.ts
-│   │   │   └── validation.middleware.ts
-│   │   ├── models/                   # Mongoose data schemas
-│   │   │   ├── alert.model.ts        # System alerts & breach records
-│   │   │   ├── geofence.model.ts     # Polygon & Circle geofence zones
-│   │   │   ├── telemetry.model.ts    # MongoDB Bucket Pattern schema
-│   │   │   └── vehicle.model.ts      # Fleet vehicle metadata & state
-│   │   ├── pubsub/                   # Redis message broker
-│   │   │   ├── publisher.ts
-│   │   │   └── subscriber.ts
-│   │   ├── routes/                   # REST API route definitions
-│   │   │   ├── geofence.routes.ts
-│   │   │   ├── telemetry.routes.ts
-│   │   │   └── vehicle.routes.ts
-│   │   ├── services/                 # Business logic layer
-│   │   │   ├── alert.service.ts
-│   │   │   ├── geofence.service.ts
-│   │   │   ├── telemetry.service.ts  # Bucket aggregation & time-range queries
-│   │   │   └── vehicle.service.ts
-│   │   ├── types/                    # Strict TypeScript interfaces & type definitions
-│   │   │   ├── alert.types.ts
-│   │   │   ├── geofence.types.ts
-│   │   │   ├── telemetry.types.ts
-│   │   │   └── vehicle.types.ts
-│   │   ├── utils/                    # Shared constants, custom errors & logging
-│   │   │   ├── constants.ts
-│   │   │   ├── errors.ts
-│   │   │   └── logger.ts
-│   │   ├── websocket/                # Socket.IO handlers
-│   │   │   ├── alert.socket.ts
-│   │   │   ├── socket.server.ts
-│   │   │   └── telemetry.socket.ts
-│   │   ├── workers/                  # Background thread workers
-│   │   │   ├── telemetry.worker.ts
-│   │   │   └── worker-pool.ts
-│   │   ├── app.ts                    # Express application setup
-│   │   └── server.ts                 # Server initialization & entrypoint
+│   │   ├── controllers/
+│   │   ├── geospatial/
+│   │   ├── middleware/
+│   │   ├── models/
+│   │   ├── pubsub/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   ├── types/
+│   │   ├── utils/
+│   │   ├── websocket/
+│   │   ├── workers/
+│   │   ├── app.ts
+│   │   └── server.ts
 │   └── package.json
-└── README                            # Project documentation
+│
+└── README.md
 ```
 
 ---
 
-## 📊 5. Current Implementation Progress
+## ⚡ Performance Goals
 
-| Component / Subsystem | Status | Details |
-| :--- | :---: | :--- |
-| **Strict Type System** | ✅ **Complete** | Full interfaces for `Vehicle`, `TelemetryBucket`, `Geofence`, and `Alert` |
-| **Mongoose Data Models** | ✅ **Complete** | Complete schemas with compound indexes and validation rules |
-| **Telemetry Bucket Logic** | ✅ **Complete** | Hourly time bucketing (`getBucketStart`, `addTelemetryReading`, `getTelemetryByTimeRange`) |
-| **Database Connection** | ✅ **Complete** | Safe MongoDB async connection with typed returns and error logging |
-| **Vehicle Service Layer** | 🔄 *In Progress* | Vehicle registration, metadata querying, and status updates |
-| **API Endpoints & Validation** | ⏳ *Planned* | Express routers and strict schema validation middleware |
-| **Geospatial & Turf Engine** | ⏳ *Planned* | Dynamic polygon and radius containment checks for active fleets |
-| **Worker Threads Ingestion** | ⏳ *Planned* | Multi-threaded telemetry deserialization and validation pool |
-| **Redis Pub/Sub & WebSockets** | ⏳ *Planned* | Distributed message distribution and live client fanout |
-| **Canvas 60 FPS Telemetry UI** | ⏳ *Planned* | Client-side interpolation buffer and canvas rendering engine |
+```text
+┌──────────────────────────────────────────────┐
+│             FLEETDASH PERFORMANCE             │
+├──────────────────────────────────────────────┤
+│                                              │
+│  ⚡ API Ingestion             < 50ms         │
+│                                              │
+│  🌍 Geofence Processing       < 5ms          │
+│                                              │
+│  📡 Telemetry Propagation     < 100ms        │
+│                                              │
+│  🎨 Dashboard Rendering       60 FPS         │
+│                                              │
+└──────────────────────────────────────────────┘
+```
 
----
-
-## 🎯 6. Performance Targets
-
-- **Ingestion Latency:** `< 50ms` from ingestion endpoint to worker distribution.
-- **Geofence Processing:** `< 5ms` per coordinate validation against active geospatial zones via Turf.js.
-- **Database Write Optimization:** **>80% reduction** in document growth and indexing overhead via MongoDB Bucket Pattern.
-- **Client Rendering:** Consistent **60 FPS** UI animation using hardware-accelerated HTML5 Canvas and `requestAnimationFrame`.
-- **WebSocket Throughput:** Sub-100ms end-to-end telemetry propagation from ingest to UI.
+These are **project targets**, not guarantees of current production performance.
 
 ---
 
-## 🌿 7. Development & Git Workflow
+## 🔐 Security
 
-### Active Branch
-All active feature development and daily work must take place exclusively on:
+Sensitive configuration should remain outside the repository.
+
+```text
+.env
+.env.local
+.env.production
+API KEYS
+DATABASE CREDENTIALS
+REDIS CREDENTIALS
+PRIVATE KEYS
+ACCESS TOKENS
+```
+
+Use an `.env.example` file for safe configuration documentation.
+
+---
+
+## 🚀 Development
+
+Clone the repository:
+
+```bash
+git clone https://github.com/Mannsoni8/intership-infotec.git
+cd intership-infotec
+```
+
+Switch to the active development branch:
+
 ```bash
 git checkout mann
 ```
-> ⚠️ **Notice:** Branch `mann-daily` is strictly prohibited.
 
-### Commit Standards
-All commits must follow **Conventional Commits**:
-- `feat: <description>` — New user-facing or architectural functionality
-- `fix: <description>` — Bug fixes
-- `refactor: <description>` — Code reorganization without functional changes
-- `test: <description>` — Addition or correction of tests
-- `docs: <description>` — Documentation updates
-- `chore: <description>` — Tooling, dependency, and configuration maintenance
-
-### Engineering Standards
-- **Strict TypeScript:** No `any` types permitted.
-- **Zero Broken Commits:** Every commit must be fully verified and functional.
-- **Modular Codebase:** Clean separation of concerns between ingestion, services, geospatial engines, and presentation layers.
+Install dependencies for the required client/server directories and configure your environment variables using `.env.example`.
 
 ---
 
-## 🔒 8. Security & Secret Hygiene
-
-To prevent data leaks and protect infrastructure credentials:
-
-- **Never Commit Sensitive Files:**
-  - `.env`, `.env.*`, `.env.local`, `.env.production`
-  - Private keys, API keys, tokens, MongoDB connection strings, Redis credentials, and certificates.
-- **Allowed:** `.env.example` containing descriptive placeholder keys only.
-- **Pre-Commit Verification Routine:**
-  ```bash
-  git status
-  git diff --staged
-  ```
-  *Verify that no environment files or sensitive secrets are staged before committing.*
-
----
-
-### 🔴 Live Telemetry Concept
+## 🎯 Roadmap
 
 ```text
-📡 Vehicle
-   │
-   ▼
-⚡ Ingestion ──► 🧵 Workers ──► 🗄️ MongoDB
-   │                  │
-   │                  └────────► 🌍 Geofence Engine
-   ▼
-📬 Redis Pub/Sub ──► 🔌 Socket.IO ──► 🖥️ React Canvas
-                                      │
-                                      ▼
-                                  60 FPS UI
+              NOW
+               │
+               ▼
+        ┌───────────────┐
+        │ Vehicle APIs  │
+        └───────┬───────┘
+                │
+                ▼
+        ┌───────────────┐
+        │ Validation    │
+        └───────┬───────┘
+                │
+                ▼
+        ┌───────────────┐
+        │ Geofencing    │
+        └───────┬───────┘
+                │
+                ▼
+        ┌───────────────┐
+        │ Worker Pool   │
+        └───────┬───────┘
+                │
+                ▼
+        ┌───────────────┐
+        │ Redis + WS    │
+        └───────┬───────┘
+                │
+                ▼
+        ┌───────────────┐
+        │ Live Dashboard│
+        └───────────────┘
 ```
 
 ---
 
 <div align="center">
 
-```
-================================================================================
-   ⚡ FLEETDASH  •  HIGH-THROUGHPUT REAL-TIME TELEMETRY ENGINE  •  2026 ⚡
-================================================================================
-```
+## ⚡ FLEETDASH
 
-<sub>Built with precision for high-concurrency fleet intelligence.</sub>
+### `MOVE DATA. TRACK VEHICLES. SEE EVERYTHING.`
+
+<img src="./assets/fleetdash-graffiti.svg" alt="FleetDash graffiti animation" width="80%"/>
+
+<br/>
+
+**Built with TypeScript • Node.js • React • MongoDB • Redis • Socket.IO**
+
+<br/>
+
+`📡 LIVE TELEMETRY` `🌍 GEOINTELLIGENCE` `⚡ EVENT DRIVEN`
 
 </div>
