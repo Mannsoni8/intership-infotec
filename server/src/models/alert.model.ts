@@ -1,9 +1,9 @@
 import { Schema, model } from "mongoose";
-import {
+import type {
   IAlert,
   AlertType,
   AlertSeverity,
-} from "../types/alert.types";
+} from "../types/alert.types.js";
 
 const alertSchema = new Schema<IAlert>(
   {

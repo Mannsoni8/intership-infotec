@@ -1,9 +1,9 @@
 import { Schema, model } from "mongoose";
-import {
+import type {
   IVehicle,
   VehicleStatus,
   VehicleType,
-} from "../types/vehicle.types";
+} from "../types/vehicle.types.js";
 
 const vehicleSchema = new Schema<IVehicle>(
   {

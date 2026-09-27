@@ -1,8 +1,8 @@
 import { Schema, model } from "mongoose";
-import {
+import type{
   ITelemetryBucket,
   ITelemetryReading,
-} from "../types/telemetry.types";
+} from "../types/telemetry.types.js";
 
 const telemetryReadingSchema = new Schema<ITelemetryReading>(
   {

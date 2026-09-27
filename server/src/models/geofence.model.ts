@@ -1,8 +1,7 @@
 import { Schema, model } from "mongoose";
-import {
+import type {
   IGeofence,
-  GeofenceGeometry,
-} from "../types/geofence.types";
+} from "../types/geofence.types.js";
 
 const geofenceSchema = new Schema<IGeofence>(
   {
