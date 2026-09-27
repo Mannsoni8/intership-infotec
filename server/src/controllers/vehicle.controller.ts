@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import {
     createVehicle,
+    getVehicleById,
     getVehicles,
     type CreateVehicleInput,
 } from "../services/vehicle.service.js";
@@ -51,6 +52,32 @@ export const getVehiclesController = async (
 
         res.status(500).json({
             message: "Failed to retrieve vehicles",
+        });
+    }
+};
+
+export const getVehicleByIdController = async (
+    req: Request<{ vehicleId: string }>,
+    res: Response
+): Promise<void> => {
+    try {
+        const vehicle = await getVehicleById(req.params.vehicleId);
+
+        if (!vehicle) {
+            res.status(404).json({
+                message: "Vehicle not found",
+            });
+            return;
+        }
+
+        res.status(200).json({
+            vehicle,
+        });
+    } catch (error) {
+        console.error("Vehicle retrieval error:", error);
+
+        res.status(500).json({
+            message: "Failed to retrieve vehicle",
         });
     }
 };

@@ -28,3 +28,9 @@ export const getVehicles = async (): Promise<IVehicle[]> => {
         .sort({ createdAt: -1 })
         .lean();
 };
+
+export const getVehicleById = async (
+    vehicleId: string
+): Promise<IVehicle | null> => {
+    return Vehicle.findOne({ vehicleId }).lean();
+};
