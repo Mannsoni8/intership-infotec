@@ -1,0 +1,485 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f4f5f7;
+  color: #222;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  background: #2b4a8b;
+  color: white;
+}
+
+.logo {
+  color: white;
+  font-size: 22px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.user-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.content {
+  max-width: 860px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+h1 {
+  font-size: 26px;
+}
+
+button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 4px;
+  background: #2b4a8b;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button:hover {
+  background: #1f3868;
+}
+
+button:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}
+
+button.danger {
+  background: #c0392b;
+}
+
+button.secondary {
+  background: #e3e6ec;
+  color: #222;
+}
+
+button.secondary:hover {
+  background: #d3d7df;
+}
+
+button.small {
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+button.link-button {
+  background: none;
+  color: #2b4a8b;
+  padding: 0 6px;
+  text-decoration: underline;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+input,
+select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.muted {
+  color: #777;
+  font-size: 13px;
+}
+
+.error {
+  color: #c0392b;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 14px 16px;
+  margin: 12px 0;
+}
+
+.panel h3 {
+  margin: 0;
+}
+
+.inline-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.inline-form input {
+  flex: 1;
+}
+
+.import-text {
+  min-height: 140px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+}
+
+.people {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.people li {
+  padding: 4px 0;
+}
+
+/* login */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 360px;
+  margin: 40px auto;
+  background: white;
+  padding: 24px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.auth-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+}
+
+/* document list */
+.doc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.doc-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+}
+
+.doc-link {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-decoration: none;
+  color: inherit;
+  flex: 1;
+}
+
+.doc-title {
+  font-size: 17px;
+  font-weight: bold;
+  color: #2b4a8b;
+}
+
+/* editor page */
+.back-link {
+  color: #2b4a8b;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.doc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 10px 0;
+}
+
+.doc-header h1,
+.doc-header form {
+  margin: 0;
+}
+
+.title-input {
+  font-size: 24px;
+  font-weight: bold;
+  border: 1px solid transparent;
+  background: transparent;
+  padding: 4px 8px;
+  min-width: 280px;
+}
+
+.title-input:hover,
+.title-input:focus {
+  border-color: #ccc;
+  background: white;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.presence-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.status {
+  padding: 2px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  color: white;
+  background: #999;
+}
+
+.status-connected {
+  background: #27ae60;
+}
+
+.status-disconnected,
+.status-denied {
+  background: #c0392b;
+}
+
+.peers {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.peer {
+  padding: 3px 10px;
+  border-radius: 14px;
+  color: white;
+  font-size: 13px;
+}
+
+.editor {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 18px 16px;
+  min-height: 220px;
+}
+
+/* ---- one block ---- */
+.block {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin-bottom: 6px;
+  padding: 2px 4px;
+  border-left: 3px solid transparent;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+/* state: I am editing this block */
+.block-mine {
+  border-left-color: #2b4a8b;
+  background: #f3f6fd;
+}
+
+/* state: somebody else is editing this block (locked) */
+.block-locked {
+  border-left-color: var(--lock-color, #999);
+  background: #fafafa;
+}
+
+/* state: somebody else just changed this block */
+.block-flash {
+  background: #fff6c8;
+}
+
+.lock-badge {
+  position: absolute;
+  top: -9px;
+  right: 8px;
+  padding: 1px 8px;
+  border-radius: 8px;
+  font-size: 11px;
+  color: white;
+  z-index: 3;
+}
+
+.bullet {
+  padding-top: 3px;
+  width: 12px;
+  text-align: center;
+}
+
+.block-field {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+/* the textarea and the cursor layers must look exactly the same, so the text wraps in the same way */
+.field-text,
+.cursor-layer {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 2px 4px;
+  border: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  letter-spacing: normal;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.field-text {
+  position: relative;
+  resize: none;
+  overflow: hidden;
+  outline: none;
+  background: transparent;
+  color: #222;
+}
+
+.cursor-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  color: transparent;
+  z-index: 2;
+}
+
+.remote-selection {
+  border-radius: 2px;
+}
+
+.caret {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 1.2em;
+  margin-left: -1px;
+  border-left: 2px solid;
+  vertical-align: text-bottom;
+}
+
+.caret-name {
+  position: absolute;
+  bottom: 100%;
+  left: -2px;
+  padding: 0 4px;
+  border-radius: 3px 3px 3px 0;
+  font-size: 10px;
+  line-height: 14px;
+  white-space: nowrap;
+  color: white;
+}
+
+/* block types (used by the textarea and the cursor layers) */
+.type-heading {
+  font-weight: bold;
+}
+.type-heading.level-1 {
+  font-size: 26px;
+}
+.type-heading.level-2 {
+  font-size: 21px;
+}
+.type-heading.level-3,
+.type-heading.level-4,
+.type-heading.level-5,
+.type-heading.level-6 {
+  font-size: 17px;
+}
+
+.type-codeBlock {
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+}
+textarea.type-codeBlock {
+  background: #272822;
+  color: #f8f8f2;
+  border-radius: 4px;
+  padding: 8px;
+}
+.cursor-layer.type-codeBlock {
+  padding: 8px;
+}
+
+.type-quote {
+  border-left: 4px solid #bbb !important;
+  font-style: italic;
+}
+textarea.type-quote {
+  color: #555;
+}
+
+/* the toolbar of a block is only visible when needed */
+.block-tools {
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.block:hover .block-tools,
+.block:focus-within .block-tools {
+  opacity: 1;
+}
+
+.block-tools select {
+  padding: 3px;
+  font-size: 12px;
+}
+
+.block-tools button {
+  padding: 3px 8px;
+  font-size: 12px;
+}
+
+.add-block {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.status-bar {
+  margin-top: 10px;
+}
