@@ -1,0 +1,22 @@
+{
+  "name": "syncdoc",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SyncDoc - collaborative document engine (internship project, weeks 1-4)",
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "setup": "node scripts/setup.js",
+    "dev:server": "npm run dev --workspace=server",
+    "dev:client": "npm run dev --workspace=client",
+    "seed": "npm run seed --workspace=server",
+    "build": "npm run build --workspaces",
+    "typecheck": "npm run typecheck --workspaces",
+    "test": "npm test --workspaces"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
