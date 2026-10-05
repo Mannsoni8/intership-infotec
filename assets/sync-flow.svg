@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" role="img" aria-labelledby="title desc">
+  <title id="title">SyncDoc animated architecture</title>
+  <desc id="desc">Animated data flows from Browser to Server to MongoDB, with REST and WebSocket paths.</desc>
+  <defs>
+    <style>
+      .box{fill:#14213d;stroke:#2a3b66;stroke-width:2}
+      .label{font:700 22px system-ui,sans-serif;fill:#fff}
+      .sub{font:14px system-ui,sans-serif;fill:#b9c8e6}
+      .line{fill:none;stroke:#00a896;stroke-width:4;stroke-linecap:round}
+      .ws{fill:none;stroke:#f4a100;stroke-width:4;stroke-linecap:round;stroke-dasharray:8 8}
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#00a896"/>
+    </marker>
+    <marker id="arrowWs" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#f4a100"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="300" rx="22" fill="#0b1326"/>
+
+  <rect class="box" x="35" y="85" width="220" height="115" rx="18"/>
+  <text class="label" x="145" y="130" text-anchor="middle">Browser</text>
+  <text class="sub" x="145" y="158" text-anchor="middle">React + TypeScript + Yjs</text>
+  <text class="sub" x="145" y="181" text-anchor="middle">Live editor + presence</text>
+
+  <rect class="box" x="340" y="85" width="220" height="115" rx="18"/>
+  <text class="label" x="450" y="130" text-anchor="middle">Server</text>
+  <text class="sub" x="450" y="158" text-anchor="middle">Express + WebSocket</text>
+  <text class="sub" x="450" y="181" text-anchor="middle">Validation + sync + auth</text>
+
+  <rect class="box" x="645" y="85" width="220" height="115" rx="18"/>
+  <text class="label" x="755" y="130" text-anchor="middle">MongoDB</text>
+  <text class="sub" x="755" y="158" text-anchor="middle">Users + document AST</text>
+  <text class="sub" x="755" y="181" text-anchor="middle">Persistent storage</text>
+
+  <path class="line" d="M255 115H332" marker-end="url(#arrow)"/>
+  <path class="ws" d="M255 170H332" marker-end="url(#arrowWs)"/>
+  <path class="line" d="M560 142H637" marker-end="url(#arrow)"/>
+
+  <text x="294" y="105" text-anchor="middle" font-family="system-ui" font-size="12" fill="#9fb0d3">REST + JWT</text>
+  <text x="294" y="191" text-anchor="middle" font-family="system-ui" font-size="12" fill="#9fb0d3">WebSocket</text>
+  <text x="599" y="132" text-anchor="middle" font-family="system-ui" font-size="12" fill="#9fb0d3">Mongoose</text>
+
+  <circle r="7" fill="#00a896">
+    <animateMotion dur="2.2s" repeatCount="indefinite" path="M255 115H332"/>
+  </circle>
+  <circle r="7" fill="#f4a100">
+    <animateMotion dur="1.7s" repeatCount="indefinite" path="M255 170H332"/>
+  </circle>
+  <circle r="7" fill="#00a896">
+    <animateMotion dur="2.0s" repeatCount="indefinite" path="M560 142H637"/>
+  </circle>
+
+  <text x="450" y="248" text-anchor="middle" font-family="system-ui" font-size="14" fill="#9fb0d3">
+    Live Yjs copy → validated block tree → DOMPurify → MongoDB
+  </text>
+</svg>
