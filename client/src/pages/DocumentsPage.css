@@ -1,0 +1,66 @@
+.workspace-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--canvas);
+}
+
+.workspace-main-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.workspace-content {
+  padding: 32px;
+  max-width: 1360px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.workspace-header-section {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--ink-primary);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.section-subtitle {
+  font-size: 13.5px;
+  color: var(--ink-secondary);
+  margin-top: 4px;
+}
+
+.doc-count-badge {
+  font-size: 12px;
+  font-weight: 500;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  color: var(--ink-secondary);
+}
+
+.workspace-error-banner {
+  background-color: var(--danger-surface);
+  color: var(--danger);
+  border: 1px solid #fecaca;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .workspace-content {
+    padding: 20px 16px;
+  }
+}

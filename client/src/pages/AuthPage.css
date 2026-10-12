@@ -1,0 +1,127 @@
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--canvas);
+  padding: 24px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 40px 36px;
+  box-shadow: var(--shadow-md);
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.auth-logo-badge {
+  width: 44px;
+  height: 44px;
+  background-color: var(--sidebar);
+  color: #ffffff;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 20px;
+  margin: 0 auto 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.auth-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ink-primary);
+  margin-bottom: 6px;
+  letter-spacing: -0.02em;
+}
+
+.auth-subtitle {
+  font-size: 13.5px;
+  color: var(--ink-secondary);
+  line-height: 1.45;
+}
+
+.auth-form-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.password-input-group {
+  position: relative;
+}
+
+.toggle-password-btn {
+  position: absolute;
+  right: 12px;
+  top: 34px;
+  background: transparent;
+  border: none;
+  color: var(--ink-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-password-btn:hover {
+  color: var(--ink-primary);
+}
+
+.auth-hint {
+  font-size: 12px;
+  color: var(--ink-muted);
+  margin-top: -6px;
+}
+
+.auth-error-banner {
+  background-color: var(--danger-surface);
+  color: var(--danger);
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  border: 1px solid #fecaca;
+}
+
+.auth-submit-btn {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.auth-footer {
+  margin-top: 24px;
+  text-align: center;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 16px;
+}
+
+.auth-footer-text {
+  font-size: 13.5px;
+  color: var(--ink-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.auth-switch-link {
+  background: transparent;
+  border: none;
+  color: var(--accent-blue-ink);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.auth-switch-link:hover {
+  text-decoration: underline;
+}

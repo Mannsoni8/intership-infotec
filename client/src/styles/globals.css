@@ -1,0 +1,59 @@
+@import './tokens.css';
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--canvas);
+  color: var(--ink-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: 14px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-secondary);
+}
+
+/* Utility Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 0 0 rgba(38, 50, 70, 0.2); }
+  70% { box-shadow: 0 0 0 8px rgba(38, 50, 70, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(38, 50, 70, 0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

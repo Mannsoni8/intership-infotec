@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { api, downloadExport, getToken } from '../api';
 import { useAuth } from '../context/AuthContext';
@@ -7,8 +7,12 @@ import { useCollabDoc } from '../hooks/useCollabDoc';
 import { focusBlock } from '../utils/dom';
 import { BlockType, DocInfo, RemoteCursor } from '../types';
 import Block, { BlockOps } from './Block';
-import PresenceBar from './PresenceBar';
-import SharePanel from './SharePanel';
+import { EditorTopbar } from './editor/EditorTopbar';
+import { CollaboratorAvatars } from './editor/CollaboratorAvatars';
+import { BlockToolbar } from './editor/BlockToolbar';
+import { ShareDialog } from './sharing/ShareDialog';
+import { AlertCircle } from 'lucide-react';
+import '../styles/editor.css';
 
 const NO_CURSORS: RemoteCursor[] = [];
 
@@ -20,34 +24,48 @@ function Editor({ docId }: { docId: string }) {
   const [info, setInfo] = useState<DocInfo | null>(null);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
-  const [titleDraft, setTitleDraft] = useState('');
   const [showShare, setShowShare] = useState(false);
-  const [newType, setNewType] = useState<BlockType>('paragraph');
 
-  const collab = useCollabDoc(docId, token, { name: user?.name ?? 'Guest', color: user?.color ?? '#888888' });
+  const collab = useCollabDoc(docId, token, {
+    name: user?.name ?? 'Guest',
+    color: user?.color ?? '#888888',
+  });
   const cursor = useCursorState();
   const {
-    blocks, locks, cursors, status, closeReason, peers, myClientId,
-    acquireLock, releaseLock, setLocalCursor, insertBlockAfter, splitBlock, deleteBlock, changeType, setLevel, changeDepth,
+    blocks,
+    locks,
+    cursors,
+    status,
+    closeReason,
+    peers,
+    myClientId,
+    acquireLock,
+    releaseLock,
+    setLocalCursor,
+    insertBlockAfter,
+    splitBlock,
+    deleteBlock,
+    changeType,
+    setLevel,
+    changeDepth,
   } = collab;
 
-  // the title, owner and collaborators come from the normal rest api
+  // Retrieve title, owner and collaborators via REST API
   useEffect(() => {
     api
       .getDoc(docId)
       .then((doc) => {
         setInfo(doc);
-        setTitleDraft(doc.title);
       })
       .catch((err: Error) => setError(err.message));
   }, [docId]);
 
-  // my local cursor (from the cursor context) is shared with the other users
+  // Sync cursor selection with peers
   useEffect(() => {
     setLocalCursor(cursor.blockId, cursor.anchor, cursor.head);
   }, [cursor, setLocalCursor]);
 
-  // after creating / deleting a block, put the caret in the right block
+  // Keep caret focus in the appropriate block after split or delete
   const blocksRef = useRef(blocks);
   blocksRef.current = blocks;
   const pendingFocus = useRef<{ id: string; where: 'start' | 'end' } | null>(null);
@@ -69,7 +87,7 @@ function Editor({ docId }: { docId: string }) {
       },
       remove: (id, focusPrevious) => {
         const list = blocksRef.current;
-        if (list.length <= 1) return; // a document always keeps one block
+        if (list.length <= 1) return; // a document always keeps at least one block
         const index = list.findIndex((b) => b.id === id);
         if (focusPrevious && index > 0) pendingFocus.current = { id: list[index - 1].id, where: 'end' };
         deleteBlock(id);
@@ -86,21 +104,17 @@ function Editor({ docId }: { docId: string }) {
     [acquireLock, releaseLock, splitBlock, deleteBlock, changeType, setLevel, changeDepth]
   );
 
-  const handleAddBlock = () => {
+  const handleAddBlock = (type: BlockType = 'paragraph') => {
     const last = blocksRef.current[blocksRef.current.length - 1];
-    const id = insertBlockAfter(last ? last.id : null, newType);
+    const id = insertBlockAfter(last ? last.id : null, type);
     pendingFocus.current = { id, where: 'start' };
   };
 
-  const handleRename = async (e?: FormEvent) => {
-    e?.preventDefault();
-    if (!info || info.role !== 'owner' || titleDraft.trim() === info.title) return;
-    if (!titleDraft.trim()) {
-      setTitleDraft(info.title);
-      return;
-    }
+  const handleRename = async (newTitle: string) => {
+    if (!info || info.role !== 'owner') return;
     try {
-      setInfo(await api.renameDoc(info._id, titleDraft.trim()));
+      const updated = await api.renameDoc(info._id, newTitle);
+      setInfo(updated);
     } catch (err) {
       setNotice((err as Error).message);
     }
@@ -127,9 +141,13 @@ function Editor({ docId }: { docId: string }) {
 
   if (error) {
     return (
-      <div>
+      <div className="editor-error-screen animate-fade-in">
+        <AlertCircle size={40} className="error-icon" />
+        <h2>Unable to load document</h2>
         <p className="error">{error}</p>
-        <Link to="/">Back to documents</Link>
+        <Link to="/" className="back-btn-pill">
+          Back to documents
+        </Link>
       </div>
     );
   }
@@ -138,100 +156,104 @@ function Editor({ docId }: { docId: string }) {
   const activeIndex = blocks.findIndex((b) => b.id === cursor.blockId);
 
   return (
-    <div>
-      <Link to="/" className="back-link">
-        &lt; Back
-      </Link>
+    <div className="editor-page-container">
+      <EditorTopbar
+        info={info}
+        onRename={handleRename}
+        onShare={() => setShowShare(true)}
+        onExport={handleExport}
+        onLeave={handleLeave}
+        statusIndicator={
+          <CollaboratorAvatars
+            peers={peers}
+            myClientId={myClientId}
+            status={status}
+          />
+        }
+      />
 
-      <div className="doc-header">
-        {isOwner ? (
-          <form onSubmit={handleRename}>
-            <input
-              className="title-input"
-              value={titleDraft}
-              maxLength={120}
-              onChange={(e) => setTitleDraft(e.target.value)}
-              onBlur={() => void handleRename()}
-              aria-label="Document title"
-            />
-          </form>
-        ) : (
-          <h1>{info?.title ?? 'Loading...'}</h1>
-        )}
-        <div className="header-buttons">
-          {isOwner && (
-            <button type="button" onClick={() => setShowShare((v) => !v)}>
-              Share
-            </button>
+      {notice && (
+        <div className="editor-notice-bar">
+          <AlertCircle size={15} />
+          <span>{notice}</span>
+          <button className="notice-dismiss" onClick={() => setNotice('')}>
+            &times;
+          </button>
+        </div>
+      )}
+
+      {status === 'denied' && (
+        <div className="editor-denied-banner animate-fade-in">
+          <AlertCircle size={20} />
+          <span>
+            {closeReason || 'You do not have access to this document.'}
+          </span>
+          <Link to="/" className="denied-back-link">
+            Return to documents
+          </Link>
+        </div>
+      )}
+
+      <div className="editor-canvas-wrapper">
+        <div className="editor-canvas">
+          {blocks.length === 0 && status === 'connected' && (
+            <div className="editor-empty-hint">
+              <p>This document is empty. Choose a block below to start typing.</p>
+            </div>
           )}
-          {info && !isOwner && (
-            <button type="button" className="danger" onClick={handleLeave}>
-              Leave
-            </button>
+
+          <div className="blocks-container">
+            {blocks.map((block) => (
+              <Block
+                key={block.id}
+                block={block}
+                lock={locks[block.id]}
+                remoteCursors={cursors[block.id] ?? NO_CURSORS}
+                myClientId={myClientId}
+                ops={ops}
+              />
+            ))}
+          </div>
+
+          <BlockToolbar onAddBlock={handleAddBlock} disabled={status !== 'connected'} />
+        </div>
+
+        <div className="editor-footer-status">
+          {activeIndex === -1 ? (
+            <span>Click any block to edit. Enter = new block · Tab = indent list item · Backspace = delete empty block</span>
+          ) : (
+            <span>
+              Block {activeIndex + 1} of {blocks.length} — Cursor position {cursor.head}
+              {cursor.anchor !== cursor.head && ` (${Math.abs(cursor.anchor - cursor.head)} chars selected)`}
+            </span>
           )}
-          <button type="button" className="secondary" onClick={() => handleExport('pdf')}>
-            PDF
-          </button>
-          <button type="button" className="secondary" onClick={() => handleExport('html')}>
-            HTML
-          </button>
-          <button type="button" className="secondary" onClick={() => handleExport('md')}>
-            Markdown
-          </button>
         </div>
       </div>
 
-      {notice && <p className="error">{notice}</p>}
-      {info && isOwner && showShare && <SharePanel info={info} onChange={setInfo} />}
-
-      <PresenceBar peers={peers} myClientId={myClientId} status={status} />
-      {status === 'denied' && (
-        <p className="error">
-          {closeReason || 'You do not have access to this document.'} <Link to="/">Back to documents</Link>
-        </p>
+      {info && isOwner && (
+        <ShareDialog
+          isOpen={showShare}
+          docSummary={
+            info
+              ? {
+                  _id: info._id,
+                  title: info.title,
+                  updatedAt: info.updatedAt,
+                  blockCount: blocks.length,
+                  role: info.role,
+                  ownerName: info.owner.name,
+                }
+              : null
+          }
+          onClose={() => setShowShare(false)}
+        />
       )}
-
-      <div className="editor">
-        {blocks.length === 0 && status === 'connected' && <p className="muted">This document is empty. Add a block below.</p>}
-        {blocks.map((block) => (
-          <Block
-            key={block.id}
-            block={block}
-            lock={locks[block.id]}
-            remoteCursors={cursors[block.id] ?? NO_CURSORS}
-            myClientId={myClientId}
-            ops={ops}
-          />
-        ))}
-      </div>
-
-      <div className="add-block">
-        <select value={newType} onChange={(e) => setNewType(e.target.value as BlockType)} aria-label="New block type">
-          <option value="paragraph">Text</option>
-          <option value="heading">Heading</option>
-          <option value="listItem">List item</option>
-          <option value="quote">Quote</option>
-          <option value="codeBlock">Code</option>
-        </select>
-        <button type="button" onClick={handleAddBlock} disabled={status !== 'connected'}>
-          + Add block
-        </button>
-      </div>
-
-      <p className="status-bar muted">
-        {activeIndex === -1
-          ? 'Click a block to start typing. Enter = new block, Tab = indent list item.'
-          : `Block ${activeIndex + 1} of ${blocks.length} - cursor at ${cursor.head}${
-              cursor.anchor !== cursor.head ? ` (${Math.abs(cursor.anchor - cursor.head)} selected)` : ''
-            }`}
-      </p>
     </div>
   );
 }
 
 export default function EditorPage() {
   const { id } = useParams<{ id: string }>();
-  // the key makes a fresh editor (and a fresh cursor state) for every document
   return (
     <CursorProvider key={id}>
       <Editor docId={id ?? ''} />

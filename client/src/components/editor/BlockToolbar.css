@@ -1,0 +1,51 @@
+.block-toolbar-strip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  padding: 6px 14px;
+  box-shadow: var(--shadow-sm);
+  margin-top: 24px;
+}
+
+.toolbar-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.toolbar-buttons-cluster {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.toolbar-action-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  padding: 5px 12px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink-primary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.toolbar-action-chip:hover:not(:disabled) {
+  background-color: var(--sidebar);
+  color: #ffffff;
+  border-color: var(--sidebar);
+}
+
+.toolbar-action-chip:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

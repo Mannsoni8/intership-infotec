@@ -1,0 +1,125 @@
+.workspace-header {
+  height: var(--header-height);
+  background-color: var(--canvas);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  border-bottom: 1px solid var(--border);
+  gap: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.mobile-menu-trigger {
+  display: none;
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: 8px;
+  border-radius: var(--radius-md);
+  color: var(--ink-primary);
+  cursor: pointer;
+}
+
+.header-greeting-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-greeting-sub {
+  font-size: 12px;
+  color: var(--ink-secondary);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.header-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ink-primary);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.header-center {
+  flex: 1;
+  max-width: 480px;
+}
+
+.search-bar-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0 12px;
+  height: 38px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.15s ease;
+}
+
+.search-bar-wrapper:focus-within {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(38, 50, 70, 0.08);
+}
+
+.search-icon {
+  color: var(--ink-secondary);
+  flex-shrink: 0;
+  margin-right: 8px;
+}
+
+.search-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 13.5px;
+  color: var(--ink-primary);
+}
+
+.search-input::placeholder {
+  color: var(--ink-muted);
+}
+
+.search-clear-btn {
+  background: transparent;
+  border: none;
+  color: var(--ink-muted);
+  cursor: pointer;
+  font-size: 16px;
+  padding: 2px 6px;
+}
+
+.search-clear-btn:hover {
+  color: var(--ink-primary);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+@media (max-width: 900px) {
+  .workspace-header {
+    padding: 0 16px;
+  }
+  .mobile-menu-trigger {
+    display: flex;
+  }
+}
+
+@media (max-width: 640px) {
+  .header-center {
+    display: none;
+  }
+}

@@ -1,0 +1,133 @@
+.share-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.share-invite-form {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.share-alert {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+}
+
+.share-alert.error {
+  background-color: var(--danger-surface);
+  color: var(--danger);
+}
+
+.share-alert.success {
+  background-color: var(--accent-sage);
+  color: var(--accent-sage-ink);
+}
+
+.collaborators-list-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.collaborators-header {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-secondary);
+}
+
+.collaborator-items {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.collaborator-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--canvas);
+  border: 1px solid var(--border-subtle);
+}
+
+.collaborator-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background-color: #3b82f6;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.collaborator-avatar.col-guest {
+  background-color: #64748b;
+}
+
+.collaborator-details {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.collaborator-name {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--ink-primary);
+}
+
+.collaborator-sub {
+  font-size: 12px;
+  color: var(--ink-secondary);
+}
+
+.role-tag.owner {
+  font-size: 11px;
+  background-color: var(--accent-blue);
+  color: var(--accent-blue-ink);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-weight: 500;
+}
+
+.remove-collab-btn {
+  background: transparent;
+  border: none;
+  color: var(--ink-muted);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.remove-collab-btn:hover {
+  background-color: var(--danger-surface);
+  color: var(--danger);
+}
+
+.loading-muted,
+.no-collabs-text {
+  font-size: 13px;
+  color: var(--ink-secondary);
+  padding: 8px 0;
+}
